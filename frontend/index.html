@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Image AI Analyzer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🤖 Image AI Analyzer</h1>
+      <p>Upload an image, choose a model and let AI analyze it</p>
+    </header>
+
+    <form id="uploadForm">
+
+      <!-- Image Upload -->
+      <div class="card">
+        <label class="section-label">📁 Upload Image</label>
+        <div class="drop-zone" id="dropZone">
+          <input type="file" id="imageInput" accept="image/*" hidden/>
+          <div class="drop-content" id="dropContent">
+            <span class="icon">🖼️</span>
+            <p>Drag & drop or <strong>click to browse</strong></p>
+            <small>JPG, PNG, WEBP supported</small>
+          </div>
+          <img id="preview" src="" alt="Preview" hidden/>
+        </div>
+      </div>
+
+      <!-- Model Selection -->
+      <div class="card">
+        <label class="section-label">🧠 Select AI Model</label>
+        <div class="model-grid">
+          <label class="model-card selected">
+            <input type="radio" name="model" value="detr-resnet-50" checked hidden/>
+            <span class="model-icon">🔍</span>
+            <span class="model-name">DETR ResNet-50</span>
+            <span class="model-desc">Object Detection</span>
+          </label>
+          <label class="model-card">
+            <input type="radio" name="model" value="resnet-50" hidden/>
+            <span class="model-icon">🏷️</span>
+            <span class="model-name">ResNet-50</span>
+            <span class="model-desc">Image Classification</span>
+          </label>
+          <label class="model-card">
+            <input type="radio" name="model" value="vit-base-patch16-224" hidden/>
+            <span class="model-icon">🔬</span>
+            <span class="model-name">ViT Base</span>
+            <span class="model-desc">Image Classification</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" id="submitBtn" disabled>
+        <span id="btnText">⚡ Analyze Image</span>
+        <span id="btnLoader" hidden>⏳ Analyzing...</span>
+      </button>
+
+    </form>
+
+    <!-- Results -->
+    <div class="card result-card" id="resultCard" hidden>
+      <label class="section-label">✅ Results</label>
+      <div id="resultMeta"></div>
+      <pre id="resultJson"></pre>
+    </div>
+
+    <div class="card error-card" id="errorCard" hidden>
+      <label class="section-label">❌ Error</label>
+      <p id="errorMsg"></p>
+    </div>
+
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

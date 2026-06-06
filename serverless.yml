@@ -1,0 +1,60 @@
+service: image-ai-analyzer
+
+frameworkVersion: "3"
+
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: ${file(configuration.json):region}
+  environment:
+    DYNAMODB_TABLE: ${file(configuration.json):dynamoDBtable}
+    S3_BUCKET: ${file(configuration.json):s3Bucket}
+    HF_API_TOKEN: ${env:HF_API_TOKEN}
+
+package:
+  patterns:
+    - "!node_modules/**"
+    - "!frontend/**"
+    - "!.env"
+    - "lambda/**"
+
+functions:
+  analyzeImage:
+    handler: lambda/handler.lambda_handler
+    role: ${file(configuration.json):lambdaRole}
+    timeout: 30
+    events:
+      - http:
+          path: /analyze
+          method: post
+          cors: true
+
+resources:
+  Resources:
+
+    ImagesBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${file(configuration.json):s3Bucket}
+
+    AnalysisTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${file(configuration.json):dynamoDBtable}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    requirementsFile: lambda/requirements.txt
+    dockerizePip: false

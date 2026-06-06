@@ -1,0 +1,7 @@
+{
+    "lambdaRole": "arn:aws:iam::654654494029:role/LabRole",
+    "region": "us-east-1",
+    "dynamoDBtable": "image-ai-results",
+    "s3Bucket": "image-ai-analyzer-654654494029",
+    "hfApiToken": ""
+}
